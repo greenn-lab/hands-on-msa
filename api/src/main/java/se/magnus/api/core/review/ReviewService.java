@@ -1,12 +1,22 @@
 package se.magnus.api.core.review;
 
-import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 public interface ReviewService {
 
-  @GetMapping(value = "/review", produces = "application/json")
-  List<Review> getReviews(@RequestParam(value = "id") int productId);
+    Review createReview(@RequestBody Review body);
 
+    /**
+     * Sample usage: curl $HOST:$PORT/review?productId=1
+     *
+     * @param productId
+     * @return
+     */
+    @GetMapping(
+        value    = "/review",
+        produces = "application/json")
+    Flux<Review> getReviews(@RequestParam(value = "productId", required = true) int productId);
+
+    void deleteReviews(@RequestParam(value = "productId", required = true)  int productId);
 }
